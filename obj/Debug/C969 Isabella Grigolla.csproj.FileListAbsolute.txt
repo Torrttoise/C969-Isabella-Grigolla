@@ -1,0 +1,12 @@
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\bin\Debug\C969 Isabella Grigolla.exe.config
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\bin\Debug\C969 Isabella Grigolla.exe
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\bin\Debug\C969 Isabella Grigolla.pdb
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.AssemblyReference.cache
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.SuggestedBindingRedirects.cache
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969_Isabella_Grigolla.Form1.resources
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969_Isabella_Grigolla.Properties.Resources.resources
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.GenerateResource.cache
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.CoreCompileInputs.cache
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969 Isabella Grigolla.exe
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969 Isabella Grigolla.pdb
+C:\Users\bellg\source\repos\C969 Isabella Grigolla\obj\Debug\C969_Isabella_Grigolla.Form2.resources
