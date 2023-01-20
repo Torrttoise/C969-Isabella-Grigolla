@@ -1,6 +1,6 @@
 ﻿namespace C969_Isabella_Grigolla
 {
-    partial class Form4
+    partial class Form5
     {
         /// <summary>
         /// Required designer variable.

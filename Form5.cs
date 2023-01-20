@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace C969_Isabella_Grigolla
 {
-    public partial class Form4 : Form
+    public partial class Form5 : Form
     {
-        public Form4()
+        public Form5()
         {
             InitializeComponent();
         }

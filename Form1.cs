@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace C969_Isabella_Grigolla
 {
@@ -73,6 +75,38 @@ namespace C969_Isabella_Grigolla
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["virtualHostLocal"].ConnectionString;
+
+            MySqlConnection conn = null;
+
+            try
+            {
+                conn = new MySqlConnection(constr);
+
+                conn.Open();
+
+                MessageBox.Show("Connection is Successful");
+            }
+            catch(MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                if(conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
