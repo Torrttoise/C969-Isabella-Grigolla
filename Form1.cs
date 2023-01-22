@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using C969_Isabella_Grigolla.Database_Files;
 
 namespace C969_Isabella_Grigolla
 {
@@ -76,32 +77,33 @@ namespace C969_Isabella_Grigolla
         {
 
         }
-
+        int i;
         private void button1_Click(object sender, EventArgs e)
         {
-            string constr = ConfigurationManager.ConnectionStrings["virtualHostLocal"].ConnectionString;
+            int i = 0;
+            MySqlCommand cmd = ConnectionDatabase.conn.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select * from user where userName='" + textBox1.Text + "' and password='" + textBox2.Text + "'";
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+            da.Fill(dt);
+            i = Convert.ToInt32(dt.Rows.Count.ToString());
 
-            MySqlConnection conn = null;
 
-            try
+
+            if (i==0)
             {
-                conn = new MySqlConnection(constr);
-
-                conn.Open();
-
-                MessageBox.Show("Connection is Successful");
+                MessageBox.Show("Invalid Login./n Please Try Again.");
             }
-            catch(MySqlException ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                this.Hide();
+                Form2 t = new Form2();
+                MessageBox.Show("Login Successful");
+                t.Show();
             }
-            finally
-            {
-                if(conn != null)
-                {
-                    conn.Close();
-                }
-            }
+
         }
 
         private void button4_Click(object sender, EventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using C969_Isabella_Grigolla.Database_Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,9 +15,14 @@ namespace C969_Isabella_Grigolla
         [STAThread]
         static void Main()
         {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+
+            ConnectionDatabase.startConnection();
             Application.Run(new Form1());
+            ConnectionDatabase.closeConnection();
         }
     }
 }
