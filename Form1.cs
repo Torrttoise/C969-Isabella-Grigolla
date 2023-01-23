@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using C969_Isabella_Grigolla.Database_Files;
+using System.Globalization;
 
 namespace C969_Isabella_Grigolla
 {
@@ -19,6 +20,7 @@ namespace C969_Isabella_Grigolla
         public Form1()
         {
             InitializeComponent();
+            var culture = new CultureInfo("EN");
         }
 
         private void label1_Click(object sender, EventArgs e)
