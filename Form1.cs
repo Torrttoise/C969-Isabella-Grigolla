@@ -80,7 +80,7 @@ namespace C969_Isabella_Grigolla
 
         }
         int i;
-        private void button1_Click(object sender, EventArgs e)
+        public void button1_Click(object sender, EventArgs e)
         {
             int i = 0;
             MySqlCommand cmd = ConnectionDatabase.conn.CreateCommand();
@@ -102,9 +102,16 @@ namespace C969_Isabella_Grigolla
             {
                 this.Hide();
                 Form2 t = new Form2();
-                MessageBox.Show("Login Successful");
+                //MessageBox.Show("Login Successful");
                 t.Show();
+                
             }
+
+           /* if (f == true)
+            { 
+
+            }*/
+
 
         }
 

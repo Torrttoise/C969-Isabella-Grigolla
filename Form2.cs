@@ -19,12 +19,19 @@ namespace C969_Isabella_Grigolla
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            
+            Form3 t = new Form3();
+            t.Show();
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

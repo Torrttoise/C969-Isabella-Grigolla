@@ -51,3 +51,9 @@ C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\C969_Isab
 C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.GenerateResource.cache
 C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.CoreCompileInputs.cache
 C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\C969 Isabella Grigolla.csproj.CopyComplete
+C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\bin\Debug\de\C969 Isabella Grigolla.resources.dll
+C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\bin\Debug\es\C969 Isabella Grigolla.resources.dll
+C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form1.de.resources
+C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form1.es.resources
+C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\de\C969 Isabella Grigolla.resources.dll
+C:\Users\LabUser\Desktop\C969 Project\C969-Isabella-Grigolla\obj\Debug\es\C969 Isabella Grigolla.resources.dll
