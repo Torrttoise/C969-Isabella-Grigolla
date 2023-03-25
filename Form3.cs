@@ -16,6 +16,31 @@ namespace C969_Isabella_Grigolla
 {
     public partial class Form3 : Form
     {
+        MySqlConnection con = new MySqlConnection("Data Source=127.0.0.1,3306;" +
+                "Initial Catalog =client_schedule;" +
+                "Integrated Security =true;" +
+                "User =sqlUser;" +
+                "Password =Passw0rd!");
+
+        MySqlConnection con2 = new MySqlConnection("Data Source=127.0.0.1,3306;" +
+               "Initial Catalog =client_schedule;" +
+               "Integrated Security =true;" +
+               "User =sqlUser;" +
+               "Password =Passw0rd!");
+
+        MySqlDataAdapter cust = new MySqlDataAdapter();
+        MySqlDataAdapter cust2 = new MySqlDataAdapter();
+        MySqlDataAdapter cust3 = new MySqlDataAdapter();
+        MySqlDataAdapter cust4 = new MySqlDataAdapter();
+        MySqlDataAdapter userUpdate = new MySqlDataAdapter();
+        int customerId;
+
+        MySqlDataAdapter deleteCust = new MySqlDataAdapter();
+
+        //singh = cust;
+        //bumrah = custTableView;
+        //amandeep = con;
+
         public Form3()
         {
             InitializeComponent();
@@ -23,82 +48,249 @@ namespace C969_Isabella_Grigolla
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = GetUsersList();
-
-        }
-
-        private DataTable GetUsersList()
-        {
-            //MySqlCommand cmd = ConnectionDatabase.conn.CreateCommand();
-            DataTable userList = new DataTable();
-            string constr = ConfigurationManager.ConnectionStrings["virtualHostLocal"].ConnectionString;
-
-            using (MySqlConnection conn = new MySqlConnection(constr))
+            try
             {
-                using (MySqlCommand cmd = new MySqlCommand("select * from customer", conn))
                 {
-                    conn.Open();
-
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    userList.Load(reader);
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
                 }
+
             }
-            
-            return userList;
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        
 
         private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        void viewCustomer(MySqlConnection con)
         {
             try
             {
-                //Host = localhost; Port = 3306; Database = client_schedule; Username = sqlUser; Password = Passw0rd!
-                SqlConnection con = new SqlConnection("Server =localhost; Database=client_schedule; username=test; password=test; Integrated Security = true;");
+                {
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
+                }
+
+            }
+            catch(Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MySqlCommand commandUser = new MySqlCommand("SELECT CURRENT_USER()", con);
+            DataTable dataUserLog = new DataTable();
+            MySqlDataAdapter sda = new MySqlDataAdapter(commandUser);
+            sda.Fill(dataUserLog);
+            string currentUser;
+            currentUser = dataUserLog.Rows[0].ItemArray[0].ToString();
+
+
+            try
+            {
+                //cust.InsertCommand = new MySqlCommand("INSERT INTO customer (customerName, addressid) VALUES ('" + textBox1.Text + "') SELECT addressId FROM address Order BY addressId DESC LIMIT 1", con);
+
+                //userFind.SelectCommand = new MySqlCommand("SELECT USER()", con);
+                cust.InsertCommand = new MySqlCommand("INSERT INTO country (country, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox8.Text + "', NOW(), '"+ currentUser + "', '" + currentUser + "')", con);
+                cust2.InsertCommand = new MySqlCommand("INSERT INTO city (city, countryId, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox4.Text + "', LAST_INSERT_ID(), NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                cust3.InsertCommand = new MySqlCommand("INSERT INTO address (address, cityId, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox2.Text + "', LAST_INSERT_ID(), NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                cust4.InsertCommand = new MySqlCommand("INSERT INTO customer (customerName, addressId, active,  createDate, createdBy, lastUpdateBy) VALUES ('" + textBox1.Text + "', LAST_INSERT_ID(), '" + 1 + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+
                 con.Open();
-                SqlCommand cmd = new SqlCommand(); // you can define commandText and connection in SqlCommand(defineArea);
-                cmd.Connection = con;              // like; cmd = newSqlCommand("Insert into...",con);
-
-                DateTime dateTimeVariable = DateTime.Today;
-
-
-                cmd.CommandText = "Insert into customer(customerName, createDate)values(@customerName, @createDate)";
-                cmd.Parameters.AddWithValue("@customerName", textBox1.Text);
-                //cmd.Parameters.AddWithValue("@createDate", dateTimeVariable);
-                cmd.Parameters.Clear();
-
-
-                cmd.CommandText = "Insert into address( address, phone)values(@address, @phone)";
-                
-                cmd.Parameters.AddWithValue("@address", textBox2.Text);
-                cmd.Parameters.AddWithValue("@phone", textBox3.Text);
-                cmd.Parameters.Clear();
-
-                cmd.CommandText = "Insert into city(city)values(@city)";
-                cmd.Parameters.AddWithValue("@city", textBox4.Text);
-                cmd.Parameters.Clear();
-
-
-                cmd.CommandText = "Insert into country(country)values(@country)";
-                cmd.Parameters.AddWithValue("@country", textBox1.Text);
-                
-
-                cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
-                cmd.Dispose();
+                cust.InsertCommand.ExecuteNonQuery();
+                cust2.InsertCommand.ExecuteNonQuery();
+                cust3.InsertCommand.ExecuteNonQuery();
+                cust4.InsertCommand.ExecuteNonQuery();
                 con.Close();
 
+                textBox1.Text = String.Empty;
+                textBox2.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox8.Text = String.Empty;
+                textBox3.Text = String.Empty;
 
-                MessageBox.Show("Save Success!");
+                cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                DataTable custTableView = new DataTable();
+                cust.Fill(custTableView);
+                dataGridView1.DataSource = custTableView;
+
+                MessageBox.Show("Added New Customer");
+
             }
-            catch (Exception ex)
+            catch (Exception x)
             {
-                MessageBox.Show("Exception : " + ex);
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
+        public void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            //userUpdate
+            int addId = (int) dataGridView1.SelectedCells[2].Value;
+            int custId = (int)dataGridView1.SelectedCells[0].Value;
+            customerId = custId;
+
+            con.Open();
+            string selectAddIds = "SELECT address.address , city.city, country.country FROM address, city, country WHERE addressId = '" + addId + " ' AND address.cityId = city.cityId AND city.countryId = country.countryId";
+            MySqlCommand command;
+            MySqlDataReader mdr;
+
+            command = new MySqlCommand(selectAddIds, con);
+
+            mdr = command.ExecuteReader();
+
+            if(mdr.Read())
+            {
+                textBox1.Text = dataGridView1.SelectedCells[1].Value.ToString();
+                textBox2.Text = mdr.GetString("address");
+                textBox4.Text = mdr.GetString("city");
+                textBox8.Text = mdr.GetString("country");
+                textBox3.Text = mdr.GetString("address");
+                con.Close();
+            }
+            else
+            {
+                MessageBox.Show("Error Invalid ID. \n Try Again.");
+            }
+            
+        }
+
+        public void button2_Click(object sender, EventArgs e)
+        {
+            
+            try
+            {
+                con2.Open();
+                string updateQuery = "UPDATE customer, address, city, country SET customer.customerName ='" + textBox1.Text + "', address.address = '" + textBox2.Text + "', city.city = '" + textBox4.Text + "', country.country = '" + textBox8.Text + "' WHERE customer.customerId = '" + customerId + " ' AND customer.addressId = address.addressId AND address.cityId = city.cityId AND city.countryId = country.countryId";
+                MySqlCommand command2;
+                MySqlDataReader mdr2;
+
+                command2 = new MySqlCommand(updateQuery, con2);
+
+                command2.ExecuteReader();
+                
+
+                textBox1.Text = String.Empty;
+                textBox2.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox8.Text = String.Empty;
+                textBox3.Text = String.Empty;
+
+
+                cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                DataTable custTableView = new DataTable();
+                cust.Fill(custTableView);
+                dataGridView1.DataSource = custTableView;
+
+                MessageBox.Show("Updated Customer");
+                con2.Close();
+            }
+
+
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                deleteCust.DeleteCommand = new MySqlCommand("DELETE FROM customer WHERE customerId = '"+ customerId + "'", con);
+                con.Open();
+                deleteCust.DeleteCommand.ExecuteNonQuery();
+                con.Close();
+
+                textBox1.Text = String.Empty;
+                textBox2.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox8.Text = String.Empty;
+                textBox3.Text = String.Empty;
+
+                cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                DataTable custTableView = new DataTable();
+                cust.Fill(custTableView);
+                dataGridView1.DataSource = custTableView;
+
+                MessageBox.Show("Deleted Customer");
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

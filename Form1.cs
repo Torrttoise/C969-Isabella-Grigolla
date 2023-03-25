@@ -96,7 +96,7 @@ namespace C969_Isabella_Grigolla
 
             if (i==0)
             {
-                MessageBox.Show("Invalid Login./n Please Try Again.");
+                MessageBox.Show("Invalid Login.\n Please Try Again.");
             }
             else
             {

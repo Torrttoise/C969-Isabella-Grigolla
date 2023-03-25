@@ -38,6 +38,7 @@ namespace C969_Isabella_Grigolla
 
         private void button1_Click(object sender, EventArgs e)
         {
+            /*
             try
             {
                 string constr = ConfigurationManager.ConnectionStrings["virtualHostLocal"].ConnectionString;
@@ -62,9 +63,15 @@ namespace C969_Isabella_Grigolla
             {
                 MessageBox.Show("Exception : " + ex);
             }
+            */
         }
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
