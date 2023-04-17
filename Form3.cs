@@ -98,37 +98,45 @@ namespace C969_Isabella_Grigolla
             sda.Fill(dataUserLog);
             string currentUser;
             currentUser = dataUserLog.Rows[0].ItemArray[0].ToString();
-
+            //User = Form1.User;
 
             try
             {
                 //cust.InsertCommand = new MySqlCommand("INSERT INTO customer (customerName, addressid) VALUES ('" + textBox1.Text + "') SELECT addressId FROM address Order BY addressId DESC LIMIT 1", con);
 
                 //userFind.SelectCommand = new MySqlCommand("SELECT USER()", con);
-                cust.InsertCommand = new MySqlCommand("INSERT INTO country (country, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox8.Text + "', NOW(), '"+ currentUser + "', '" + currentUser + "')", con);
-                cust2.InsertCommand = new MySqlCommand("INSERT INTO city (city, countryId, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox4.Text + "', LAST_INSERT_ID(), NOW(), '" + currentUser + "', '" + currentUser + "')", con);
-                cust3.InsertCommand = new MySqlCommand("INSERT INTO address (address, cityId, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox2.Text + "', LAST_INSERT_ID(), NOW(), '" + currentUser + "', '" + currentUser + "')", con);
-                cust4.InsertCommand = new MySqlCommand("INSERT INTO customer (customerName, addressId, active,  createDate, createdBy, lastUpdateBy) VALUES ('" + textBox1.Text + "', LAST_INSERT_ID(), '" + 1 + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                if(string.IsNullOrEmpty(textBox1.Text) || string.IsNullOrEmpty(textBox2.Text) || string.IsNullOrEmpty(textBox4.Text) || string.IsNullOrEmpty(textBox8.Text) || string.IsNullOrEmpty(textBox3.Text))
+                {
+                    MessageBox.Show("Data cannot be empty, please enter data.");
+                }
+                else
+                {
+                    cust.InsertCommand = new MySqlCommand("INSERT INTO country (country, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox8.Text + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                    cust2.InsertCommand = new MySqlCommand("INSERT INTO city (city, countryId, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox4.Text + "', LAST_INSERT_ID(), NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                    cust3.InsertCommand = new MySqlCommand("INSERT INTO address (address, cityId, phone, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox2.Text + "', LAST_INSERT_ID(), '" + textBox3.Text + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                    cust4.InsertCommand = new MySqlCommand("INSERT INTO customer (customerName, addressId, active,  createDate, createdBy, lastUpdateBy) VALUES ('" + textBox1.Text + "', LAST_INSERT_ID(), '" + 1 + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
 
-                con.Open();
-                cust.InsertCommand.ExecuteNonQuery();
-                cust2.InsertCommand.ExecuteNonQuery();
-                cust3.InsertCommand.ExecuteNonQuery();
-                cust4.InsertCommand.ExecuteNonQuery();
-                con.Close();
+                    con.Open();
+                    cust.InsertCommand.ExecuteNonQuery();
+                    cust2.InsertCommand.ExecuteNonQuery();
+                    cust3.InsertCommand.ExecuteNonQuery();
+                    cust4.InsertCommand.ExecuteNonQuery();
+                    con.Close();
 
-                textBox1.Text = String.Empty;
-                textBox2.Text = String.Empty;
-                textBox4.Text = String.Empty;
-                textBox8.Text = String.Empty;
-                textBox3.Text = String.Empty;
+                    textBox1.Text = String.Empty;
+                    textBox2.Text = String.Empty;
+                    textBox4.Text = String.Empty;
+                    textBox8.Text = String.Empty;
+                    textBox3.Text = String.Empty;
 
-                cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
-                DataTable custTableView = new DataTable();
-                cust.Fill(custTableView);
-                dataGridView1.DataSource = custTableView;
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
 
-                MessageBox.Show("Added New Customer");
+                    MessageBox.Show("Added New Customer");
+                }
+                
 
             }
             catch (Exception x)
@@ -163,7 +171,8 @@ namespace C969_Isabella_Grigolla
             customerId = custId;
 
             con.Open();
-            string selectAddIds = "SELECT address.address , city.city, country.country FROM address, city, country WHERE addressId = '" + addId + " ' AND address.cityId = city.cityId AND city.countryId = country.countryId";
+
+            string selectAddIds = "SELECT address.address , city.city, country.country, address.phone FROM address, city, country WHERE addressId = '" + addId + " ' AND address.cityId = city.cityId AND city.countryId = country.countryId";
             MySqlCommand command;
             MySqlDataReader mdr;
 
@@ -171,20 +180,40 @@ namespace C969_Isabella_Grigolla
 
             mdr = command.ExecuteReader();
 
-            if(mdr.Read())
+            var phoneTest = mdr.GetOrdinal("phone");
+
+            mdr.Read();
+            if(Convert.IsDBNull(mdr["phone"]))
             {
                 textBox1.Text = dataGridView1.SelectedCells[1].Value.ToString();
                 textBox2.Text = mdr.GetString("address");
                 textBox4.Text = mdr.GetString("city");
                 textBox8.Text = mdr.GetString("country");
-                textBox3.Text = mdr.GetString("address");
-                con.Close();
+                textBox3.Text = "";
+                /*
+                string phoneNull = mdr.GetString("phone");
+
+                if (phoneNull == null)
+                {
+                    textBox3.Text = "";
+                }
+                else
+                {
+                    textBox3.Text = mdr.GetString("phone");
+                } */
+
+                
             }
             else
             {
-                MessageBox.Show("Error Invalid ID. \n Try Again.");
+                textBox1.Text = dataGridView1.SelectedCells[1].Value.ToString();
+                textBox2.Text = mdr.GetString("address");
+                textBox4.Text = mdr.GetString("city");
+                textBox8.Text = mdr.GetString("country");
+                textBox3.Text = mdr.GetString("phone");
             }
-            
+            con.Close();
+            mdr.Close();
         }
 
         public void button2_Click(object sender, EventArgs e)
@@ -192,33 +221,38 @@ namespace C969_Isabella_Grigolla
             
             try
             {
-                con2.Open();
-                string updateQuery = "UPDATE customer, address, city, country SET customer.customerName ='" + textBox1.Text + "', address.address = '" + textBox2.Text + "', city.city = '" + textBox4.Text + "', country.country = '" + textBox8.Text + "' WHERE customer.customerId = '" + customerId + " ' AND customer.addressId = address.addressId AND address.cityId = city.cityId AND city.countryId = country.countryId";
-                MySqlCommand command2;
-                MySqlDataReader mdr2;
+                if (string.IsNullOrEmpty(textBox1.Text) || string.IsNullOrEmpty(textBox2.Text) || string.IsNullOrEmpty(textBox4.Text) || string.IsNullOrEmpty(textBox8.Text) || string.IsNullOrEmpty(textBox3.Text))
+                {
+                    MessageBox.Show("Data cannot be empty, please enter data.");
+                }
+                else
+                {
+                    con2.Open();
+                    string updateQuery = "UPDATE customer, address, city, country SET customer.customerName ='" + textBox1.Text + "', address.address = '" + textBox2.Text + "', city.city = '" + textBox4.Text + "', country.country = '" + textBox8.Text + "', address.phone = '" + textBox3.Text + "' WHERE customer.customerId = '" + customerId + " ' AND customer.addressId = address.addressId AND address.cityId = city.cityId AND city.countryId = country.countryId";
+                    MySqlCommand command2;
+                    MySqlDataReader mdr2;
 
-                command2 = new MySqlCommand(updateQuery, con2);
+                    command2 = new MySqlCommand(updateQuery, con2);
 
-                command2.ExecuteReader();
-                
-
-                textBox1.Text = String.Empty;
-                textBox2.Text = String.Empty;
-                textBox4.Text = String.Empty;
-                textBox8.Text = String.Empty;
-                textBox3.Text = String.Empty;
+                    command2.ExecuteReader();
 
 
-                cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
-                DataTable custTableView = new DataTable();
-                cust.Fill(custTableView);
-                dataGridView1.DataSource = custTableView;
+                    textBox1.Text = String.Empty;
+                    textBox2.Text = String.Empty;
+                    textBox4.Text = String.Empty;
+                    textBox8.Text = String.Empty;
+                    textBox3.Text = String.Empty;
 
-                MessageBox.Show("Updated Customer");
-                con2.Close();
+
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
+
+                    MessageBox.Show("Updated Customer");
+                    con2.Close();
+                }
             }
-
-
             catch (Exception x)
             {
                 MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);

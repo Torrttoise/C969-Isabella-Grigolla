@@ -31,7 +31,30 @@ namespace C969_Isabella_Grigolla
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form4 t = new Form4();
+            t.Show();
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form5 t = new Form5();
+            t.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Form6 t = new Form6();
+            t.Show();
         }
     }
 }

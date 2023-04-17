@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ using System.Configuration;
 using MySql.Data.MySqlClient;
 using C969_Isabella_Grigolla.Database_Files;
 using System.Globalization;
+
 
 namespace C969_Isabella_Grigolla
 {
@@ -79,7 +81,7 @@ namespace C969_Isabella_Grigolla
         {
 
         }
-        int i;
+   
         public void button1_Click(object sender, EventArgs e)
         {
             int i = 0;
@@ -92,32 +94,49 @@ namespace C969_Isabella_Grigolla
             da.Fill(dt);
             i = Convert.ToInt32(dt.Rows.Count.ToString());
 
-
+            string user = textBox1.Text;
 
             if (i==0)
             {
-                MessageBox.Show("Invalid Login.\n Please Try Again.");
+                MessageBox.Show("Invalid Login.\nPlease Try Again.");
             }
             else
             {
                 this.Hide();
                 Form2 t = new Form2();
-                //MessageBox.Show("Login Successful");
+                string loggedIn = string.Join(Environment.NewLine,
+                    dt.Rows.OfType<DataRow>().Select(x => string.Join(user, x.ItemArray)));
+                //Gathers the username of the logged in employee and inputs into the datatable.
+
+                string paths = @"C:\Users\LabUser\Documents\employeelogin.txt";
+
+                string fileTest = System.IO.Path.Combine(paths, "employeelogin.txt");
+                
+                
+                if (System.IO.File.Exists(paths))
+                {
+                    System.IO.File.AppendAllText(paths, user + " has been logged in on " + DateTime.Now.ToString() + Environment.NewLine);
+                }
+                else
+                {
+                    System.IO.File.Create(paths);
+                    System.IO.File.AppendAllText(paths, user + " has been logged in on " + DateTime.Now.ToString() + Environment.NewLine);
+                }
+
+
+
+
+                MessageBox.Show("Welcome, " + user);
                 t.Show();
                 
             }
-
-           /* if (f == true)
-            { 
-
-            }*/
 
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
     }
 }
