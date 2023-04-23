@@ -215,6 +215,10 @@ namespace C969_Isabella_Grigolla
                 {
                     addErrorCodes("Cannot create appointment. \n There is already an appointment during parts of this time.");
                 }
+                else if (string.IsNullOrEmpty(textBox1.Text))
+                {
+                    addErrorCodes("Appointment Type cannot be empty.");
+                }
                 else
                 {
                     
@@ -246,33 +250,94 @@ namespace C969_Isabella_Grigolla
 
         public void button2_Click(object sender, EventArgs e)
         {
+            MySqlCommand commandUser = new MySqlCommand("SELECT CURRENT_USER()", con);
+            DataTable dataUserLog = new DataTable();
+            MySqlDataAdapter sda = new MySqlDataAdapter(commandUser);
+            sda.Fill(dataUserLog);
+            string currentUser;
+            currentUser = dataUserLog.Rows[0].ItemArray[0].ToString();
+            //dateTimePicker1.MinDate = DateTime.Parse("9:00:00");
+            ///dateTimePicker1.MaxDate = DateTime.Parse("15:00:00");
+            //dateTimePicker2.MinDate = DateTime.Parse("9:00:00");
+            ///dateTimePicker2.MaxDate = DateTime.Parse("15:00:00");
+
+            bool? start1 = null;
+            bool? end2 = null;
+
+
+            foreach (DataGridViewRow r in dataGridView1.Rows)
+            {
+
+                DateTime callValue = Convert.ToDateTime(r.Cells[9].Value);
+                DateTime callsValue = Convert.ToDateTime(r.Cells[10].Value);
+                if (dateTimePicker1.Value == callValue)
+                {
+                    start1 = true;
+                }
+                else if (dateTimePicker2.Value == callsValue)
+                {
+                    end2 = true;
+                }
+                else
+                {
+                    start1 = false;
+                    end2 = false;
+                }
+            }
+
+            Action<string> addErrorCodes2 = x => MessageBox.Show(x);
+            
 
             try
             {
-                con2.Open();
-                string updateQuery = "UPDATE appointment SET customerId ='" + comboBox1.SelectedValue.ToString() + "', userId = '" + comboBox2.SelectedValue.ToString() + "', title = 'not needed', description = 'not needed', location = 'not needed', contact = 'not needed', type = '" + textBox1.Text + "', url = 'not needed', start =  '" + dateTimePicker1.Text + "', end = '" + dateTimePicker2.Text + "', lastUpdate = NOW(), lastUpdateBy = CURRENT_USER() WHERE appointmentId = '" + appointmentId + "'";
-                MySqlCommand command2;
-                MySqlDataReader mdr2;
 
-                command2 = new MySqlCommand(updateQuery, con2);
+                if (dateTimePicker1.Value.Date > dateTimePicker2.Value.Date || dateTimePicker1.Value.Hour > dateTimePicker2.Value.Hour)
+                {
+                    addErrorCodes2("Start time cannot be later than end time.");
+                }
+                else if (dateTimePicker1.Value.Day != dateTimePicker2.Value.Day || dateTimePicker2.Value.Day != dateTimePicker1.Value.Day)
+                {
+                    addErrorCodes2("Appointment has to be on the same day.");
+                }
+                else if (dateTimePicker1.Value.Hour < 9 || dateTimePicker2.Value.Hour > 15)
+                {
+                    addErrorCodes2("Appointment has to be within business hours.");
+                }
+                else if (start1 == true || end2 == true)
+                {
+                    addErrorCodes2("Cannot create appointment. \n There is already an appointment during parts of this time.");
+                }
+                else if (string.IsNullOrEmpty(textBox1.Text))
+                {
+                    addErrorCodes2("Appointment Type cannot be empty.");
+                }
+                else
+                {
+                    con2.Open();
+                    string updateQuery = "UPDATE appointment SET customerId ='" + comboBox1.SelectedValue.ToString() + "', userId = '" + comboBox2.SelectedValue.ToString() + "', title = 'not needed', description = 'not needed', location = 'not needed', contact = 'not needed', type = '" + textBox1.Text + "', url = 'not needed', start =  '" + dateTimePicker1.Text + "', end = '" + dateTimePicker2.Text + "', lastUpdate = NOW(), lastUpdateBy = CURRENT_USER() WHERE appointmentId = '" + appointmentId + "'";
+                    MySqlCommand command2;
+                    MySqlDataReader mdr2;
 
-                command2.ExecuteReader();
+                    command2 = new MySqlCommand(updateQuery, con2);
+
+                    command2.ExecuteReader();
 
 
-                textBox1.Text = String.Empty;
-                comboBox1.SelectedValue = 1;
-                dateTimePicker1.Value = DateTime.Now;
-                dateTimePicker2.Value = DateTime.Now;
-                comboBox2.SelectedValue = 1;
+                    textBox1.Text = String.Empty;
+                    comboBox1.SelectedValue = 1;
+                    dateTimePicker1.Value = DateTime.Now;
+                    dateTimePicker2.Value = DateTime.Now;
+                    comboBox2.SelectedValue = 1;
 
 
-                cust.SelectCommand = new MySqlCommand("SELECT * FROM appointment", con);
-                DataTable custTableView = new DataTable();
-                cust.Fill(custTableView);
-                dataGridView1.DataSource = custTableView;
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM appointment", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
 
-                MessageBox.Show("Updated Appointment");
-                con2.Close();
+                    MessageBox.Show("Updated Appointment");
+                    con2.Close();
+                }
             }
 
 
@@ -310,6 +375,16 @@ namespace C969_Isabella_Grigolla
             {
                 MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

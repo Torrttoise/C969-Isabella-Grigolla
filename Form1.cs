@@ -96,9 +96,24 @@ namespace C969_Isabella_Grigolla
 
             string user = textBox1.Text;
 
+
+            string paths = @"C:\Users\LabUser\Documents\employeelogin.txt";
+
+            string fileTest = System.IO.Path.Combine(paths, "employeelogin.txt");
+
             if (i==0)
             {
                 MessageBox.Show("Invalid Login.\nPlease Try Again.");
+
+                if (System.IO.File.Exists(paths))
+                {
+                    System.IO.File.AppendAllText(paths, "There has been a failed login attempt with "+ user + " on " + DateTime.Now.ToString() + Environment.NewLine);
+                }
+                else
+                {
+                    System.IO.File.Create(paths);
+                    System.IO.File.AppendAllText(paths, "There has been a failed login attempt with " + user + " on " + DateTime.Now.ToString() + Environment.NewLine);
+                }
             }
             else
             {
@@ -108,9 +123,7 @@ namespace C969_Isabella_Grigolla
                     dt.Rows.OfType<DataRow>().Select(x => string.Join(user, x.ItemArray)));
                 //Gathers the username of the logged in employee and inputs into the datatable.
 
-                string paths = @"C:\Users\LabUser\Documents\employeelogin.txt";
-
-                string fileTest = System.IO.Path.Combine(paths, "employeelogin.txt");
+                
                 
                 
                 if (System.IO.File.Exists(paths))
@@ -133,6 +146,8 @@ namespace C969_Isabella_Grigolla
 
 
         }
+
+        //string publicUser = User;
 
         private void button4_Click(object sender, EventArgs e)
         {
