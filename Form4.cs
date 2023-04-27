@@ -128,8 +128,8 @@ namespace C969_Isabella_Grigolla
             {
                 textBox1.Text = mdr.GetString("type");
                 comboBox1.Text = mdr.GetString("customerName");
-                dateTimePicker1.Text = mdr.GetString("start");
-                dateTimePicker2.Text = mdr.GetString("end");
+                dateTimePicker1.Value = mdr.GetDateTime("start");
+                dateTimePicker2.Value = mdr.GetDateTime("end");
                 comboBox2.Text = mdr.GetString("userId");
                
             }
@@ -164,10 +164,7 @@ namespace C969_Isabella_Grigolla
             sda.Fill(dataUserLog);
             string currentUser;
             currentUser = dataUserLog.Rows[0].ItemArray[0].ToString();
-            //dateTimePicker1.MinDate = DateTime.Parse("9:00:00");
-            ///dateTimePicker1.MaxDate = DateTime.Parse("15:00:00");
-            //dateTimePicker2.MinDate = DateTime.Parse("9:00:00");
-            ///dateTimePicker2.MaxDate = DateTime.Parse("15:00:00");
+          
 
             bool? start1 = null;
             bool? end2 = null;
@@ -213,7 +210,7 @@ namespace C969_Isabella_Grigolla
                 }
                 else if (start1 == true || end2 == true)
                 {
-                    addErrorCodes("Cannot create appointment. \n There is already an appointment during parts of this time.");
+                    addErrorCodes("Cannot create appointment. \nThere is already an appointment during parts of this time.");
                 }
                 else if (string.IsNullOrEmpty(textBox1.Text))
                 {
@@ -250,19 +247,11 @@ namespace C969_Isabella_Grigolla
 
         public void button2_Click(object sender, EventArgs e)
         {
-            MySqlCommand commandUser = new MySqlCommand("SELECT CURRENT_USER()", con);
-            DataTable dataUserLog = new DataTable();
-            MySqlDataAdapter sda = new MySqlDataAdapter(commandUser);
-            sda.Fill(dataUserLog);
-            string currentUser;
-            currentUser = dataUserLog.Rows[0].ItemArray[0].ToString();
-            //dateTimePicker1.MinDate = DateTime.Parse("9:00:00");
-            ///dateTimePicker1.MaxDate = DateTime.Parse("15:00:00");
-            //dateTimePicker2.MinDate = DateTime.Parse("9:00:00");
-            ///dateTimePicker2.MaxDate = DateTime.Parse("15:00:00");
+            
 
-            bool? start1 = null;
-            bool? end2 = null;
+
+            bool? start3 = null;
+            bool? end4 = null;
 
 
             foreach (DataGridViewRow r in dataGridView1.Rows)
@@ -270,22 +259,34 @@ namespace C969_Isabella_Grigolla
 
                 DateTime callValue = Convert.ToDateTime(r.Cells[9].Value);
                 DateTime callsValue = Convert.ToDateTime(r.Cells[10].Value);
-                if (dateTimePicker1.Value == callValue)
+                DateTime box1 = dateTimePicker1.Value;
+                DateTime box2 = dateTimePicker2.Value;
+
+                if (box1 == callValue)
                 {
-                    start1 = true;
+                    start3 = true;
                 }
-                else if (dateTimePicker2.Value == callsValue)
+                else if (box2 == callsValue)
                 {
-                    end2 = true;
+                    end4 = true;
                 }
+                else if (box1 == callValue || box2 == callsValue)
+                {
+                    start3 = true;
+                    end4 = true;
+                }
+
                 else
                 {
-                    start1 = false;
-                    end2 = false;
+                    start3 = false;
+                    end4 = false;
                 }
             }
 
             Action<string> addErrorCodes2 = x => MessageBox.Show(x);
+
+
+            
             
 
             try
@@ -303,9 +304,9 @@ namespace C969_Isabella_Grigolla
                 {
                     addErrorCodes2("Appointment has to be within business hours.");
                 }
-                else if (start1 == true || end2 == true)
+                else if (start3 == true || end4 == true)
                 {
-                    addErrorCodes2("Cannot create appointment. \n There is already an appointment during parts of this time.");
+                    addErrorCodes2("Cannot update appointment. \nThere is already an appointment during parts of this time.");
                 }
                 else if (string.IsNullOrEmpty(textBox1.Text))
                 {

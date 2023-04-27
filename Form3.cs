@@ -113,7 +113,7 @@ namespace C969_Isabella_Grigolla
                 {
                     cust.InsertCommand = new MySqlCommand("INSERT INTO country (country, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox8.Text + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
                     cust2.InsertCommand = new MySqlCommand("INSERT INTO city (city, countryId, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox4.Text + "', LAST_INSERT_ID(), NOW(), '" + currentUser + "', '" + currentUser + "')", con);
-                    cust3.InsertCommand = new MySqlCommand("INSERT INTO address (address, cityId, phone, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox2.Text + "', LAST_INSERT_ID(), '" + textBox3.Text + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
+                    cust3.InsertCommand = new MySqlCommand("INSERT INTO address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdateBy) VALUES ('" + textBox2.Text + "', 'not needed', LAST_INSERT_ID(), 'not needed', '" + textBox3.Text + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
                     cust4.InsertCommand = new MySqlCommand("INSERT INTO customer (customerName, addressId, active,  createDate, createdBy, lastUpdateBy) VALUES ('" + textBox1.Text + "', LAST_INSERT_ID(), '" + 1 + "', NOW(), '" + currentUser + "', '" + currentUser + "')", con);
 
                     con.Open();
