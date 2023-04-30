@@ -145,4 +145,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Pantalla de inicio de sesion</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Inicio de sesión no válido. Por favor, inténtelo de nuevo.</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>Bienvenida, </value>
+  </data>
 </root>

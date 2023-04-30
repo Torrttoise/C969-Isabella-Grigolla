@@ -13,16 +13,23 @@ using System.Configuration;
 using MySql.Data.MySqlClient;
 using C969_Isabella_Grigolla.Database_Files;
 using System.Globalization;
+using System.Threading;
+using System.Resources;
+using System.IO;
 
 
 namespace C969_Isabella_Grigolla
 {
     public partial class Form1 : Form
     {
+      
+
+
         public Form1()
         {
             InitializeComponent();
             var culture = new CultureInfo("EN");
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -81,8 +88,14 @@ namespace C969_Isabella_Grigolla
         {
 
         }
-   
-        public void button1_Click(object sender, EventArgs e)
+
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public  void button1_Click(object sender, EventArgs e)
         {
             int i = 0;
             MySqlCommand cmd = ConnectionDatabase.conn.CreateCommand();
@@ -103,17 +116,20 @@ namespace C969_Isabella_Grigolla
 
             if (i==0)
             {
+                ResourceManager rm = new ResourceManager(typeof(Form1));
+                MessageBox.Show(string.Format(rm.GetString("String1")));
 
-                MessageBox.Show("Invalid Login.\nPlease Try Again.");
-
-                if (System.IO.File.Exists(paths))
+                if (File.Exists(paths))
                 {
-                    System.IO.File.AppendAllText(paths, "There has been a failed login attempt with "+ user + " on " + DateTime.Now.ToString() + Environment.NewLine);
+                    using (var sw = new StreamWriter(paths, true))
+                    {
+                        sw.WriteLine("There has been a failed login attempt with " + user + " on " + DateTime.Now.ToString());
+                    }
                 }
                 else
                 {
-                    System.IO.File.Create(paths);
-                    System.IO.File.AppendAllText(paths, "There has been a failed login attempt with " + user + " on " + DateTime.Now.ToString() + Environment.NewLine);
+                    File.Create(paths).Dispose();
+                    File.AppendAllText(paths, "There has been a failed login attempt with " + user + " on " + DateTime.Now.ToString());
                 }
             }
             else
@@ -127,22 +143,38 @@ namespace C969_Isabella_Grigolla
                 
                 
                 
-                if (System.IO.File.Exists(paths))
+                if (File.Exists(paths))
                 {
-                    System.IO.File.AppendAllText(paths, user + " has been logged in on " + DateTime.Now.ToString() + Environment.NewLine);
+                    using (var sw = new StreamWriter(paths, true))
+                    {
+                        sw.WriteLine(user + " has been logged in on " + DateTime.Now.ToString());
+                    }
+
+                    ResourceManager rm = new ResourceManager(typeof(Form1));
+                    MessageBox.Show(string.Format(rm.GetString("String2")) + user);
+                    t.Show();
+
+
                 }
                 else
                 {
-                    System.IO.File.Create(paths);
-                    System.IO.File.AppendAllText(paths, user + " has been logged in on " + DateTime.Now.ToString() + Environment.NewLine);
+                    File.Create(paths).Dispose();
+
+                    using (var sw = new StreamWriter(paths, true))
+                    {
+                        sw.WriteLine(user + " has been logged in on " + DateTime.Now.ToString());
+                    }
+                    //System.IO.File.AppendAllText(paths, user + " has been logged in on " + DateTime.Now.ToString() + Environment.NewLine);
+
+                    ResourceManager rm = new ResourceManager(typeof(Form1));
+                    MessageBox.Show(string.Format(rm.GetString("String2")) + user);
+                    t.Show();
+
                 }
 
 
 
 
-                MessageBox.Show("Welcome, " + user);
-                t.Show();
-                
             }
 
 

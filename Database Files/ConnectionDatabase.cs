@@ -24,7 +24,7 @@ namespace C969_Isabella_Grigolla.Database_Files
 
                 conn.Open();
 
-                MessageBox.Show("Connection is Successful");
+                //MessageBox.Show("Connection is Successful");
             }
             catch (MySqlException ex)
             {

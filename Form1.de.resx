@@ -145,4 +145,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Anmeldebildschirm</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Ungültige Anmeldung. Bitte versuchen Sie es erneut.</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>Willkommen, </value>
+  </data>
 </root>

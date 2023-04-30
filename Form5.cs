@@ -114,5 +114,10 @@ namespace C969_Isabella_Grigolla
         {
             this.Close();
         }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+           
+        }
     }
 }

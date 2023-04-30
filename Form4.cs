@@ -13,6 +13,8 @@ using System.Windows.Forms;
 
 namespace C969_Isabella_Grigolla
 {
+    
+    //yyyy-MM-dd HH:mm:ss
     public partial class Form4 : Form
     {
 
@@ -40,6 +42,9 @@ namespace C969_Isabella_Grigolla
             InitializeComponent();
         }
 
+        DataTable dt2 = new DataTable();
+        DataTable dt3 = new DataTable();
+
         private void Form4_Load(object sender, EventArgs e)
         {
 
@@ -65,6 +70,26 @@ namespace C969_Isabella_Grigolla
                     comboBox2.DisplayMember = "userName";
                     comboBox2.ValueMember = "userId";
 
+
+                    dt2.Columns.Add("Column1", typeof(DateTime));
+                    dt3.Columns.Add("Column1", typeof(DateTime));
+
+                    dateTimePicker1.DataBindings.Add("Value", dt2, "Column1");
+                    dateTimePicker1.DataBindings["Value"].Format += 
+                        (s, a) => a.Value = ((DateTime)a.Value).ToLocalTime();
+                    dateTimePicker1.DataBindings["Value"].Parse += 
+                        (s, a) => a.Value = ((DateTime)a.Value).ToUniversalTime();
+
+                    dateTimePicker2.DataBindings.Add("Value", dt3, "Column1");
+                    dateTimePicker2.DataBindings["Value"].Format += 
+                        (s, a) => a.Value = ((DateTime)a.Value).ToLocalTime();
+                    dateTimePicker2.DataBindings["Value"].Parse += 
+                        (s, a) => a.Value = ((DateTime)a.Value).ToUniversalTime();
+
+                    
+
+                    // label7.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
                     foreach (DataGridViewRow r in dataGridView1.Rows)
                     {
                         DateTime apptFifteenReminder = Convert.ToDateTime(r.Cells[9].Value);
@@ -89,6 +114,8 @@ namespace C969_Isabella_Grigolla
 
 
         }
+
+       
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -117,12 +144,19 @@ namespace C969_Isabella_Grigolla
 
             con.Open();
             string selectCustAppt = "SELECT appointment.customerId, customer.customerName, appointment.userId, appointment.type, appointment.start, appointment.end FROM appointment, customer WHERE appointmentId = '" + apptId + "' AND appointment.customerID = customer.customerID";
+            
             MySqlCommand command;
+            
             MySqlDataReader mdr;
+            
 
             command = new MySqlCommand(selectCustAppt, con);
+            
 
             mdr = command.ExecuteReader();
+           
+
+
 
             if (mdr.Read())
             {
@@ -168,7 +202,14 @@ namespace C969_Isabella_Grigolla
 
             bool? start1 = null;
             bool? end2 = null;
+            
 
+
+            DateTime dt1 = dateTimePicker1.Value;
+            TimeSpan st1 = new TimeSpan(dt1.Hour, dt1.Minute, dt1.Second);
+
+            DateTime dt2 = dateTimePicker2.Value;
+            TimeSpan st2 = new TimeSpan(dt2.Hour, dt2.Minute, dt2.Second);
 
             foreach (DataGridViewRow r in dataGridView1.Rows)
             {
@@ -177,9 +218,43 @@ namespace C969_Isabella_Grigolla
                 DateTime callsValue = Convert.ToDateTime(r.Cells[10].Value);
                 if (dateTimePicker1.Value == callValue)
                 {
+
                     start1 = true;
                 }
-                else if(dateTimePicker2.Value == callsValue)
+                else if (dateTimePicker2.Value == callsValue)
+                {
+
+                    end2 = true;
+                }
+                else if (dt1 == callValue.AddMinutes(15))
+                {
+                    start1 = true;
+                }
+                else if (dt2 == callsValue.AddMinutes(15))
+                {
+                    end2 = true;
+                }
+                else if (dt1 == callValue.AddMinutes(30))
+                {
+                    start1 = true;
+                }
+                else if (dt2 == callsValue.AddMinutes(30))
+                {
+                    end2 = true;
+                }
+                else if (dt1 == callValue.AddMinutes(45))
+                {
+                    start1 = true;
+                }
+                else if (dt2 == callsValue.AddMinutes(45))
+                {
+                    end2 = true;
+                }
+                else if (callValue <= dt1 && dt1 <= callsValue)
+                {
+                    start1 = true;
+                }
+                else if (callValue <= dt2 && dt2 <= callsValue)
                 {
                     end2 = true;
                 }
@@ -218,8 +293,12 @@ namespace C969_Isabella_Grigolla
                 }
                 else
                 {
-                    
-                    cust.InsertCommand = new MySqlCommand("INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES ('" + comboBox1.SelectedValue.ToString() + "','" + comboBox2.SelectedValue.ToString() + "', 'not needed', 'not needed', 'not needed', 'not needed', '" + textBox1.Text + "', 'not needed', '" + dateTimePicker1.Text + "', '" + dateTimePicker2.Text + "', NOW(), '" + currentUser + "', NOW(), '" + currentUser + "')", con);
+
+
+                    string dateTimePicker1Format = dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                    string dateTimePicker2Format = dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    cust.InsertCommand = new MySqlCommand("INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES ('" + comboBox1.SelectedValue.ToString() + "','" + comboBox2.SelectedValue.ToString() + "', 'not needed', 'not needed', 'not needed', 'not needed', '" + textBox1.Text + "', 'not needed', '" + dateTimePicker1Format + "', '" + dateTimePicker2Format + "', NOW(), '" + currentUser + "', NOW(), '" + currentUser + "')", con);
 
 
                     con.Open();
@@ -253,6 +332,8 @@ namespace C969_Isabella_Grigolla
             bool? start3 = null;
             bool? end4 = null;
 
+            DateTime dt1 = dateTimePicker1.Value;
+            DateTime dt2 = dateTimePicker2.Value;
 
             foreach (DataGridViewRow r in dataGridView1.Rows)
             {
@@ -270,12 +351,38 @@ namespace C969_Isabella_Grigolla
                 {
                     end4 = true;
                 }
-                else if (box1 == callValue || box2 == callsValue)
+                else if (dt1 == callValue.AddMinutes(15))
                 {
                     start3 = true;
+                }
+                else if (dt2 == callsValue.AddMinutes(15))
+                {
                     end4 = true;
                 }
-
+                else if (dt1 == callValue.AddMinutes(30))
+                {
+                    start3 = true;
+                }
+                else if (dt2 == callsValue.AddMinutes(30))
+                {
+                    end4 = true;
+                }
+                else if (dt1 == callValue.AddMinutes(45))
+                {
+                    start3 = true;
+                }
+                else if (dt2 == callsValue.AddMinutes(45))
+                {
+                    end4 = true;
+                }
+                else if (callValue <= dt1 && dt1 <= callsValue)
+                {
+                    start3 = true;
+                }
+                else if (callValue <= dt2 && dt2 <= callsValue)
+                {
+                    end4 = true;
+                }
                 else
                 {
                     start3 = false;
@@ -386,6 +493,16 @@ namespace C969_Isabella_Grigolla
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            
         }
     }
 }
