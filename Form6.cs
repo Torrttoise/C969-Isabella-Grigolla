@@ -101,6 +101,12 @@ namespace C969_Isabella_Grigolla
                 apptMSource.DataSource = userMonth;
                 cust.Update(userMonth);
                 dataGridView1.DataSource = userMonth;
+
+                for (int i = 0; i < userMonth.Rows.Count; i++)
+                {
+                    userMonth.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)userMonth.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                    userMonth.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)userMonth.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                }
             }
             catch (Exception x)
             {

@@ -47,6 +47,13 @@ namespace C969_Isabella_Grigolla
                     DataTable custTableView = new DataTable();
                     cust.Fill(custTableView);
                     dataGridView1.DataSource = custTableView;
+
+
+                    for (int i = 0; i < custTableView.Rows.Count; i++)
+                    {
+                        custTableView.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                        custTableView.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                    }
                 }
 
             }
@@ -65,6 +72,12 @@ namespace C969_Isabella_Grigolla
                     DataTable custTableView = new DataTable();
                     cust.Fill(custTableView);
                     dataGridView1.DataSource = custTableView;
+
+                    for (int i = 0; i < custTableView.Rows.Count; i++)
+                    {
+                        custTableView.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                        custTableView.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                    }
                 }
 
             }
@@ -83,6 +96,12 @@ namespace C969_Isabella_Grigolla
                     DataTable custTableView = new DataTable();
                     cust.Fill(custTableView);
                     dataGridView1.DataSource = custTableView;
+
+                    for (int i = 0; i < custTableView.Rows.Count; i++)
+                    {
+                        custTableView.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                        custTableView.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                    }
                 }
 
             }
@@ -101,6 +120,12 @@ namespace C969_Isabella_Grigolla
                     DataTable custTableView = new DataTable();
                     cust.Fill(custTableView);
                     dataGridView1.DataSource = custTableView;
+
+                    for (int i = 0; i < custTableView.Rows.Count; i++)
+                    {
+                        custTableView.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                        custTableView.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                    }
                 }
 
             }

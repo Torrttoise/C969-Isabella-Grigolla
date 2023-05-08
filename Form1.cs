@@ -28,7 +28,33 @@ namespace C969_Isabella_Grigolla
         public Form1()
         {
             InitializeComponent();
-            var culture = new CultureInfo("EN");
+            //var culture = new CultureInfo("EN");
+
+            //CultureInfo.CurrentCulture = new CultureInfo("de"); //TESTING ONLY REMOVE BEFORE SUBMISSION
+
+            if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "es")
+            {
+                formTitle.Text = "Base de datos de programación de empresas";
+                userName.Text = "nombre de usuario";
+                passWord.Text = "contraseña";
+                submitButton.Text = "entregar";
+                this.Text = "Programa de citas";
+                exitButton.Text = "salida";
+
+            }
+
+
+            if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "de")
+            {
+                formTitle.Text = "Programmierdatenbank des Unternehmens";
+                userName.Text = "Nutzername";
+                passWord.Text = "Passwort";
+                submitButton.Text = "einreichen";
+                this.Text = "Termindatenbank";
+                exitButton.Text = "Ausfahrt";
+
+            }
+
 
         }
 
@@ -116,8 +142,25 @@ namespace C969_Isabella_Grigolla
 
             if (i==0)
             {
-                ResourceManager rm = new ResourceManager(typeof(Form1));
-                MessageBox.Show(string.Format(rm.GetString("String1")));
+                //ResourceManager rm = new ResourceManager(typeof(Form1));
+                //MessageBox.Show(string.Format(rm.GetString("String1")));
+
+
+                if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
+                {
+                    MessageBox.Show("Invalid login. Please try again.");
+                }
+
+                if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "es")
+                {
+                    MessageBox.Show("Inicio de sesión no válido. Por favor, inténtelo de nuevo.");
+                }
+
+
+                if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "de")
+                {
+                    MessageBox.Show("Ungültiger Login. Bitte versuche es erneut.");
+                }
 
                 if (File.Exists(paths))
                 {
@@ -150,8 +193,26 @@ namespace C969_Isabella_Grigolla
                         sw.WriteLine(user + " has been logged in on " + DateTime.Now.ToString());
                     }
 
-                    ResourceManager rm = new ResourceManager(typeof(Form1));
-                    MessageBox.Show(string.Format(rm.GetString("String2")) + user);
+                    //ResourceManager rm = new ResourceManager(typeof(Form1));
+                    //MessageBox.Show(string.Format(rm.GetString("String2")) + user);
+
+                    if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
+                    {
+                        MessageBox.Show("Welcome, " + user);
+                    }
+
+
+                    if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "es")
+                    {
+                        MessageBox.Show("Bienvenida, "+ user);
+                    }
+
+
+                    if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "de")
+                    {
+                        MessageBox.Show("Willkommen, "+ user);
+                    }
+
                     t.Show();
 
 

@@ -70,22 +70,7 @@ namespace C969_Isabella_Grigolla
                     comboBox2.DisplayMember = "userName";
                     comboBox2.ValueMember = "userId";
 
-
-                    dt2.Columns.Add("Column1", typeof(DateTime));
-                    dt3.Columns.Add("Column1", typeof(DateTime));
-
-                    dateTimePicker1.DataBindings.Add("Value", dt2, "Column1");
-                    dateTimePicker1.DataBindings["Value"].Format += 
-                        (s, a) => a.Value = ((DateTime)a.Value).ToLocalTime();
-                    dateTimePicker1.DataBindings["Value"].Parse += 
-                        (s, a) => a.Value = ((DateTime)a.Value).ToUniversalTime();
-
-                    dateTimePicker2.DataBindings.Add("Value", dt3, "Column1");
-                    dateTimePicker2.DataBindings["Value"].Format += 
-                        (s, a) => a.Value = ((DateTime)a.Value).ToLocalTime();
-                    dateTimePicker2.DataBindings["Value"].Parse += 
-                        (s, a) => a.Value = ((DateTime)a.Value).ToUniversalTime();
-
+                    
                     
 
                     // label7.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -103,6 +88,13 @@ namespace C969_Isabella_Grigolla
                         }
 
                     }
+
+                    for (int i = 0; i < custTableView.Rows.Count; i++)
+                    {
+                        custTableView.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                        custTableView.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                    }
+
                 }
             }
             catch (Exception x)
@@ -154,16 +146,24 @@ namespace C969_Isabella_Grigolla
             
 
             mdr = command.ExecuteReader();
-           
 
-
+            
 
             if (mdr.Read())
             {
+
+                DateTime var222 = mdr.GetDateTime("start");
+                DateTime var333 = mdr.GetDateTime("end");
+                TimeZoneInfo systemTimeZone = TimeZoneInfo.Local;
+
+                DateTime toLocalDateTimeStart = TimeZoneInfo.ConvertTimeFromUtc(var222, systemTimeZone);
+                DateTime toLocalDateTimeEnd = TimeZoneInfo.ConvertTimeFromUtc(var333, systemTimeZone);
+
+
                 textBox1.Text = mdr.GetString("type");
                 comboBox1.Text = mdr.GetString("customerName");
-                dateTimePicker1.Value = mdr.GetDateTime("start");
-                dateTimePicker2.Value = mdr.GetDateTime("end");
+                dateTimePicker1.Value = toLocalDateTimeStart;
+                dateTimePicker2.Value = toLocalDateTimeEnd;
                 comboBox2.Text = mdr.GetString("userId");
                
             }
@@ -267,10 +267,13 @@ namespace C969_Isabella_Grigolla
 
             Action<string> addErrorCodes = x => MessageBox.Show(x);
             //Creation of main Lambda line to better streamline messageboxes. Since the if else statements cover a wide variety, it's easier to keep track of it.
-         
+            
 
             try
             {
+                
+
+
                 if (dateTimePicker1.Value.Date > dateTimePicker2.Value.Date || dateTimePicker1.Value.Hour > dateTimePicker2.Value.Hour)
                 {
                     addErrorCodes("Start time cannot be later than end time.");
@@ -293,12 +296,20 @@ namespace C969_Isabella_Grigolla
                 }
                 else
                 {
+                    
 
+                    DateTime dtp1 = dateTimePicker1.Value;
+                    DateTime dtp2 = dateTimePicker2.Value;
 
-                    string dateTimePicker1Format = dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss");
-                    string dateTimePicker2Format = dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                    DateTime dateTimePicker1Format = TimeZoneInfo.ConvertTimeToUtc(dtp1);
+                    DateTime dateTimePicker2Format = TimeZoneInfo.ConvertTimeToUtc(dtp2);
 
-                    cust.InsertCommand = new MySqlCommand("INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES ('" + comboBox1.SelectedValue.ToString() + "','" + comboBox2.SelectedValue.ToString() + "', 'not needed', 'not needed', 'not needed', 'not needed', '" + textBox1.Text + "', 'not needed', '" + dateTimePicker1Format + "', '" + dateTimePicker2Format + "', NOW(), '" + currentUser + "', NOW(), '" + currentUser + "')", con);
+                    
+
+                    string dateTimePicker1Format2 = dateTimePicker1Format.ToString("yyyy-MM-dd HH:mm:ss");
+                    string dateTimePicker2Format3 = dateTimePicker2Format.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    cust.InsertCommand = new MySqlCommand("INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES ('" + comboBox1.SelectedValue.ToString() + "','" + comboBox2.SelectedValue.ToString() + "', 'not needed', 'not needed', 'not needed', 'not needed', '" + textBox1.Text + "', 'not needed', '" + dateTimePicker1Format2 + "', '" + dateTimePicker2Format3 + "', NOW(), '" + currentUser + "', NOW(), '" + currentUser + "')", con);
 
 
                     con.Open();
@@ -421,8 +432,21 @@ namespace C969_Isabella_Grigolla
                 }
                 else
                 {
+
+                    DateTime dtp1 = dateTimePicker1.Value;
+                    DateTime dtp2 = dateTimePicker2.Value;
+
+                    DateTime dateTimePicker1Format = TimeZoneInfo.ConvertTimeToUtc(dtp1);
+                    DateTime dateTimePicker2Format = TimeZoneInfo.ConvertTimeToUtc(dtp2);
+
+
+
+                    string dateTimePicker1Format2 = dateTimePicker1Format.ToString("yyyy-MM-dd HH:mm:ss");
+                    string dateTimePicker1Format3 = dateTimePicker2Format.ToString("yyyy-MM-dd HH:mm:ss");
+
+
                     con2.Open();
-                    string updateQuery = "UPDATE appointment SET customerId ='" + comboBox1.SelectedValue.ToString() + "', userId = '" + comboBox2.SelectedValue.ToString() + "', title = 'not needed', description = 'not needed', location = 'not needed', contact = 'not needed', type = '" + textBox1.Text + "', url = 'not needed', start =  '" + dateTimePicker1.Text + "', end = '" + dateTimePicker2.Text + "', lastUpdate = NOW(), lastUpdateBy = CURRENT_USER() WHERE appointmentId = '" + appointmentId + "'";
+                    string updateQuery = "UPDATE appointment SET customerId ='" + comboBox1.SelectedValue.ToString() + "', userId = '" + comboBox2.SelectedValue.ToString() + "', title = 'not needed', description = 'not needed', location = 'not needed', contact = 'not needed', type = '" + textBox1.Text + "', url = 'not needed', start =  '" + dateTimePicker1Format2 + "', end = '" + dateTimePicker1Format3 + "', lastUpdate = NOW(), lastUpdateBy = CURRENT_USER() WHERE appointmentId = '" + appointmentId + "'";
                     MySqlCommand command2;
                     MySqlDataReader mdr2;
 
