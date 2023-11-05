@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace C969_Isabella_Grigolla
 {
@@ -34,6 +35,8 @@ namespace C969_Isabella_Grigolla
         MySqlDataAdapter cust4 = new MySqlDataAdapter();
         MySqlDataAdapter userUpdate = new MySqlDataAdapter();
         int customerId;
+
+        MySqlDataAdapter search = new MySqlDataAdapter();
 
         MySqlDataAdapter deleteCust = new MySqlDataAdapter();
 
@@ -325,6 +328,37 @@ namespace C969_Isabella_Grigolla
         private void label8_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE " + textBox5.Text + "", con);
+
+                DataTable custTableView = new DataTable();
+                search.Fill(custTableView);
+                dataGridView1.DataSource = custTableView;
+
+                /*
+                DataTable userSearch = new DataTable();
+                search.Fill(userSearch);
+                BindingSource apptMSource = new BindingSource();
+                apptMSource.DataSource = userSearch;
+                search.Update(userSearch);
+                dataGridView1.DataSource = userSearch;
+                */
+                
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 
