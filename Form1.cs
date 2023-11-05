@@ -126,8 +126,20 @@ namespace C969_Isabella_Grigolla
             int i = 0;
             MySqlCommand cmd = ConnectionDatabase.conn.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select * from user where userName='" + textBox1.Text + "' and password='" + textBox2.Text + "'";
+
+
+            string name = textBox1.Text;
+            string password = textBox2.Text;
+
+            cmd.Parameters.Add(new MySqlParameter("@userName", textBox1.Text));
+            cmd.Parameters.Add(new MySqlParameter("@password", textBox2.Text));
+
+
+
+            cmd.CommandText = "select * from user where userName=@userName and password=@password";
             cmd.ExecuteNonQuery();
+            
+            
             DataTable dt = new DataTable();
             MySqlDataAdapter da = new MySqlDataAdapter(cmd);
             da.Fill(dt);
