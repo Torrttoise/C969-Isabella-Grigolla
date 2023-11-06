@@ -339,8 +339,9 @@ namespace C969_Isabella_Grigolla
         {
             try
             {
-                search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE '%" + textBox5.Text + "&'", con);
-
+                //search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE '" + textBox5.Text + "'", con);
+                search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE customerId LIKE '%" + textBox5.Text + "%' OR customerName LIKE '%" + textBox5.Text + "%' OR createdBy LIKE '%" + textBox5.Text + "%' OR lastUpdateBy LIKE '%" + textBox5.Text + "%'", con);
+                
                 DataTable custTableView = new DataTable();
                 search.Fill(custTableView);
                 BindingSource customerSearch = new BindingSource();
@@ -348,21 +349,25 @@ namespace C969_Isabella_Grigolla
                 search.Update(custTableView);
                 dataGridView1.DataSource = custTableView;
 
-                /*
-                DataTable userSearch = new DataTable();
-                search.Fill(userSearch);
-                BindingSource apptMSource = new BindingSource();
-                apptMSource.DataSource = userSearch;
-                search.Update(userSearch);
-                dataGridView1.DataSource = userSearch;
+           
 
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-                cust.Fill(userMonth);
-                BindingSource apptMSource = new BindingSource();
-                apptMSource.DataSource = userMonth;
-                cust.Update(userMonth);
-                dataGridView1.DataSource = userMonth;
-                */
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                {
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM customer", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
+                }
 
             }
             catch (Exception x)
