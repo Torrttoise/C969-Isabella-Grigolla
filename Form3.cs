@@ -339,10 +339,11 @@ namespace C969_Isabella_Grigolla
         {
             try
             {
-                search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE " + textBox5.Text + "", con);
+                search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE '%" + textBox5.Text + "&'", con);
 
                 DataTable custTableView = new DataTable();
                 search.Fill(custTableView);
+                BindingSource customerSearch = new BindingSource();
                 dataGridView1.DataSource = custTableView;
 
                 /*
@@ -352,8 +353,15 @@ namespace C969_Isabella_Grigolla
                 apptMSource.DataSource = userSearch;
                 search.Update(userSearch);
                 dataGridView1.DataSource = userSearch;
+
+
+                cust.Fill(userMonth);
+                BindingSource apptMSource = new BindingSource();
+                apptMSource.DataSource = userMonth;
+                cust.Update(userMonth);
+                dataGridView1.DataSource = userMonth;
                 */
-                
+
             }
             catch (Exception x)
             {
