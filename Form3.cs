@@ -344,6 +344,8 @@ namespace C969_Isabella_Grigolla
                 DataTable custTableView = new DataTable();
                 search.Fill(custTableView);
                 BindingSource customerSearch = new BindingSource();
+                customerSearch.DataSource = custTableView;
+                search.Update(custTableView);
                 dataGridView1.DataSource = custTableView;
 
                 /*
