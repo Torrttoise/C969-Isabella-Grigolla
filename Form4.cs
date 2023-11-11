@@ -32,6 +32,9 @@ namespace C969_Isabella_Grigolla
         MySqlDataAdapter cust = new MySqlDataAdapter();
         MySqlDataAdapter custIdNames = new MySqlDataAdapter();
 
+
+        MySqlDataAdapter search = new MySqlDataAdapter();
+
         int appointmentId;
 
         MySqlDataAdapter deleteAppt= new MySqlDataAdapter();
@@ -527,6 +530,88 @@ namespace C969_Isabella_Grigolla
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE '" + textBox5.Text + "'", con);
+                search.SelectCommand = new MySqlCommand("SELECT * FROM appointment WHERE appointmentId LIKE '%" + textBox5.Text + "%' OR title LIKE '%" + textBox5.Text + "%' OR description LIKE '%" + textBox5.Text + "%' OR location LIKE '%" + textBox5.Text + "%' OR contact LIKE '%" + textBox5.Text + "%' OR type LIKE '%" + textBox5.Text + "%' OR url LIKE '%" + textBox5.Text + "%' OR createdBy LIKE '%" + textBox5.Text + "%' OR lastUpdateBy LIKE '%" + textBox5.Text + "%'", con);
+
+                DataTable custTableView = new DataTable();
+                search.Fill(custTableView);
+                BindingSource customerSearch = new BindingSource();
+                customerSearch.DataSource = custTableView;
+                search.Update(custTableView);
+                dataGridView1.DataSource = custTableView;
+
+
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                {
+                    cust.SelectCommand = new MySqlCommand("SELECT * FROM appointment", con);
+                    DataTable custTableView = new DataTable();
+                    cust.Fill(custTableView);
+                    dataGridView1.DataSource = custTableView;
+
+                    custIdNames.SelectCommand = new MySqlCommand("SELECT customerId, customerName FROM customer", con);
+                    DataTable custIdView = new DataTable();
+                    custIdNames.Fill(custIdView);
+                    comboBox1.DataSource = custIdView;
+                    comboBox1.DisplayMember = "customerName";
+                    comboBox1.ValueMember = "customerId";
+
+                    custIdNames.SelectCommand = new MySqlCommand("SELECT userId, userName FROM user", con);
+                    DataTable userIdView = new DataTable();
+                    custIdNames.Fill(userIdView);
+                    comboBox2.DataSource = userIdView;
+                    comboBox2.DisplayMember = "userName";
+                    comboBox2.ValueMember = "userId";
+
+
+
+
+                    // label7.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    foreach (DataGridViewRow r in dataGridView1.Rows)
+                    {
+                        DateTime apptFifteenReminder = Convert.ToDateTime(r.Cells[9].Value);
+                        int apptId = Convert.ToInt32(r.Cells[0].Value);
+                        int custId = Convert.ToInt32(r.Cells[1].Value);
+
+
+                        if (apptFifteenReminder >= DateTime.Now && apptFifteenReminder <= DateTime.Now.AddMinutes(15))
+                        {
+                            MessageBox.Show("Appointment Alert\n" + "Appointment Id:" + apptId + "\n with Customer Id:" + custId);
+                        }
+
+                    }
+
+                    for (int i = 0; i < custTableView.Rows.Count; i++)
+                    {
+                        custTableView.Rows[i]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["start"], TimeZoneInfo.Local).ToString();
+                        custTableView.Rows[i]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)custTableView.Rows[i]["end"], TimeZoneInfo.Local).ToString();
+                    }
+
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
         }
     }
 }

@@ -375,6 +375,11 @@ namespace C969_Isabella_Grigolla
                 MessageBox.Show(x.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
