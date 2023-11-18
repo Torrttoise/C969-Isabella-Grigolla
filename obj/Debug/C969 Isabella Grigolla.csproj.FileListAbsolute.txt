@@ -89,11 +89,8 @@ C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form2.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form3.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form6.resources
-C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form8.resources
-C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form7.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form5.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form4.resources
-C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form9.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Properties.Resources.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form1.de.resources
 C:\Users\LabUser\Documents\GitHub\C969-Isabella-Grigolla\obj\Debug\C969_Isabella_Grigolla.Form1.es.resources

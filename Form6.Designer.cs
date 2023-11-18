@@ -42,9 +42,10 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(681, 393);
+            this.button4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button4.Location = new System.Drawing.Point(0, 427);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(800, 23);
             this.button4.TabIndex = 22;
             this.button4.Text = "Exit";
             this.button4.UseVisualStyleBackColor = true;
