@@ -337,6 +337,7 @@ namespace C969_Isabella_Grigolla
 
         private void button5_Click(object sender, EventArgs e)
         {
+            //Search Button
             try
             {
                 //search.SelectCommand = new MySqlCommand("SELECT * FROM customer WHERE CONCAT('customerId', 'customerName', 'createdBy', 'lastUpdateBy') LIKE '" + textBox5.Text + "'", con);
@@ -360,6 +361,7 @@ namespace C969_Isabella_Grigolla
 
         private void button6_Click(object sender, EventArgs e)
         {
+            //Clear Button
             try
             {
                 {
